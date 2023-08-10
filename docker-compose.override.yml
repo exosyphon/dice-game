@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      target: development
+    environment:
+      CHAT_API_KEY:
+    image: dice-game:development
+    volumes:
+      - ./:/app

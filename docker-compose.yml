@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      args:
+        NODE_IMAGE_VERSION: 18.16
+      target: production
+    environment:
+      CHAT_API_KEY:
+    image: dice-game:production
+    networks:
+      - dicegame
+
+networks:
+  dicegame:
