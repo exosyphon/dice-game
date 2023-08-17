@@ -5,9 +5,13 @@ export default function Home() {
     const sides: string[] = ['front', 'back', 'right', 'left', 'top', 'bottom'];
     const customTextCss: string[] = ['', 'invert-text', '', '', '', 'rotated-text'];
 
+    const initialState = [1, 3, 2, 5, 4, 6];
     const [diceFront, setDiceFront] = useState<number>(0);
-    const [diceState, setDiceState] = useState<any>([1, 3, 6, 4, 2, 5]);
-    const [numberOfGuesses, setNumberOfGuesses] = useState<number>(0);
+    const [diceState, setDiceState] = useState<number[]>(initialState);
+    const [numberOfGuesses, setNumberOfGuesses] = useState<number>(1);
+    const [nextNumber, setNextNumber] = useState<number>(2);
+    const [displayX, setDisplayX] = useState<boolean>(false);
+    const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
 
     class Dice {
         front: number;
@@ -18,16 +22,15 @@ export default function Home() {
         right: number;
 
         constructor(faces: number[]) {
-            console.log('hello')
             this.front = faces[0];
-            this.top = faces[1];
-            this.back = faces[2];
-            this.bottom = faces[3];
-            this.left = faces[4];
-            this.right = faces[5];
+            this.back = faces[1];
+            this.right = faces[2];
+            this.left = faces[3];
+            this.top = faces[4];
+            this.bottom = faces[5];
         }
 
-        toArray(): any {
+        toArray(): number[] {
             return [this.front, this.top, this.back, this.bottom, this.left, this.right]
         }
 
@@ -78,28 +81,72 @@ export default function Home() {
 
     const dice = new Dice(diceState);
 
+    const checkContinueGuess = (diceFront: number) => {
+        return nextNumber === diceFront;
+    }
+
+    const guessesExceeded = () => {
+        return numberOfGuesses > 3;
+    }
+
+    const restartGame = () => {
+        resetDie();
+        setDisplaySuccess(false);
+        setDisplayX(false);
+        setNumberOfGuesses(1);
+    }
+
+    const resetDie = () => {
+        setDiceState(initialState);
+        setDiceFront(numbers.indexOf(1));
+        setNextNumber(2);
+    }
+
+    const handleFailure = () => {
+        resetDie();
+        setNumberOfGuesses(numberOfGuesses + 1);
+        setDisplayX(true);
+        setTimeout(() => {
+            setDisplayX(false);
+        }, 3000);
+    }
+
+    const checkConditions = () => {
+        if (!checkContinueGuess(dice.front)) {
+            handleFailure();
+        } else if (dice.front == 6) {
+            setDisplaySuccess(true);
+        } else {
+            setNextNumber(dice.front + 1);
+        }
+    }
+
     const rightF = () => {
         dice.rotateRight(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        checkConditions();
     };
 
     const leftF = () => {
         dice.rotateLeft(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        checkConditions();
     };
 
     const topF = () => {
         dice.rotateTop(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        checkConditions();
     };
 
     const bottomF = () => {
         dice.rotateBottom(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        checkConditions();
     };
 
     return (
@@ -124,8 +171,23 @@ export default function Home() {
                     >
                         Dice Game
                     </div>
-                    <button onClick={topF} style={{
+                    {displayX && <div style={{color: 'red'}}>❌❌ Incorrect Guess ❌❌</div>}
+                    {displaySuccess && <div style={{color: 'green'}}>✅✅ You Win!!! ✅✅</div>}
+                    {guessesExceeded() && <div style={{color: 'red'}}>Better Luck Next Time</div>}
+                    {(guessesExceeded() || displaySuccess) && <button onClick={restartGame} style={{
                         background: 'blue',
+                        color: 'white',
+                        padding: '1rem',
+                        borderRadius: '.5rem',
+                        marginBottom: '1rem',
+                        height: '50px',
+                        width: '100px'
+                    }}>Reset</button>}
+                    <div className='mb-8'>
+                        Number of Guesses: {numberOfGuesses} out of 3.
+                    </div>
+                    <button onClick={topF} disabled={guessesExceeded()} style={{
+                        background: guessesExceeded() ? 'gray' : 'blue',
                         color: 'white',
                         padding: '1rem',
                         borderRadius: '.5rem',
@@ -134,8 +196,8 @@ export default function Home() {
                         width: '100px'
                     }}>Top</button>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <button onClick={leftF} style={{
-                            background: 'blue',
+                        <button onClick={leftF} disabled={guessesExceeded()} style={{
+                            background: guessesExceeded() ? 'gray' : 'blue',
                             color: 'white',
                             padding: '1rem',
                             borderRadius: '.5rem',
@@ -158,8 +220,8 @@ export default function Home() {
                                 );
                             })}
                         </div>
-                        <button onClick={rightF} style={{
-                            background: 'blue',
+                        <button onClick={rightF} disabled={guessesExceeded()} style={{
+                            background: guessesExceeded() ? 'gray' : 'blue',
                             color: 'white',
                             padding: '1rem',
                             borderRadius: '.5rem',
@@ -168,8 +230,8 @@ export default function Home() {
                             width: '100px'
                         }}>Right</button>
                     </div>
-                    <button onClick={bottomF} style={{
-                        background: 'blue',
+                    <button onClick={bottomF} disabled={guessesExceeded()} style={{
+                        background: guessesExceeded() ? 'gray' : 'blue',
                         color: 'white',
                         padding: '1rem',
                         borderRadius: '.5rem',
