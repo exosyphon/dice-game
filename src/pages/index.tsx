@@ -2,64 +2,12 @@ import { useState } from 'react';
 
 export default function Home() {
     const numbers: number[] = [1, 6, 5, 2, 3, 4];
-    // const numbers: number[] = [1, 2, 3, 4, 5, 6];
     const sides: string[] = ['front', 'back', 'right', 'left', 'top', 'bottom'];
     const customTextCss: string[] = ['', 'invert-text', '', '', '', 'rotated-text'];
 
     const [diceFront, setDiceFront] = useState<number>(0);
+    const [diceState, setDiceState] = useState<any>([1, 3, 6, 4, 2, 5]);
     const [numberOfGuesses, setNumberOfGuesses] = useState<number>(0);
-
-    // const [front, setFront] = useState(0);
-    // const [top, setTop] = useState(4);
-    // const [back, setBack] = useState(1);
-    // const [bottom, setBottom] = useState(5);
-    // const [left, setLeft] = useState(3);
-    // const [right, setRight] = useState(2);
-
-    type Side = {
-        left: number;
-        right: number;
-        top: number;
-        bottom: number;
-    };
-    // const currentSideLookup: Side[] = [
-    //     {
-    //         left: 3,
-    //         right: 2,
-    //         top: 4,
-    //         bottom: 5,
-    //     },
-    //     {
-    //         left: 2,
-    //         right: 3,
-    //         top: 4,
-    //         bottom: 5,
-    //     },
-    //     {
-    //         left: 0,
-    //         right: 1,
-    //         top: 4,
-    //         bottom: 5,
-    //     },
-    //     {
-    //         left: 1,
-    //         right: 0,
-    //         top: 4,
-    //         bottom: 5,
-    //     },
-    //     {
-    //         left: 3,
-    //         right: 2,
-    //         top: 1,
-    //         bottom: 0,
-    //     },
-    //     {
-    //         left: 3,
-    //         right: 2,
-    //         top: 0,
-    //         bottom: 1,
-    //     },
-    // ]
 
     class Dice {
         front: number;
@@ -69,13 +17,18 @@ export default function Home() {
         left: number;
         right: number;
 
-        constructor() {
-            this.front = 1;
-            this.top = 3;
-            this.back = 6;
-            this.bottom = 4;
-            this.left = 2;
-            this.right = 5;
+        constructor(faces: number[]) {
+            console.log('hello')
+            this.front = faces[0];
+            this.top = faces[1];
+            this.back = faces[2];
+            this.bottom = faces[3];
+            this.left = faces[4];
+            this.right = faces[5];
+        }
+
+        toArray(): any {
+            return [this.front, this.top, this.back, this.bottom, this.left, this.right]
         }
 
         rotateBottom(n: number): void {
@@ -122,30 +75,31 @@ export default function Home() {
             return `Front: ${this.front}, Top: ${this.top}, Back: ${this.back}, Bottom: ${this.bottom}, Left: ${this.left}, Right: ${this.right}`;
         }
     }
-    const dice = new Dice();
+
+    const dice = new Dice(diceState);
 
     const rightF = () => {
         dice.rotateRight(1);
-        console.log(dice.toString())
-        setDiceFront(dice.front);
+        setDiceState(dice.toArray());
+        setDiceFront(numbers.indexOf(dice.front));
     };
 
     const leftF = () => {
         dice.rotateLeft(1);
-        console.log(dice.toString())
-        setDiceFront(dice.front);
+        setDiceState(dice.toArray());
+        setDiceFront(numbers.indexOf(dice.front));
     };
 
     const topF = () => {
         dice.rotateTop(1);
-        console.log(dice.toString())
-        setDiceFront(dice.front);
+        setDiceState(dice.toArray());
+        setDiceFront(numbers.indexOf(dice.front));
     };
 
     const bottomF = () => {
         dice.rotateBottom(1);
-        console.log(dice.toString())
-        setDiceFront(dice.front);
+        setDiceState(dice.toArray());
+        setDiceFront(numbers.indexOf(dice.front));
     };
 
     return (
