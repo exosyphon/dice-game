@@ -5,6 +5,13 @@ The best app to help you choose dinner without the thinking!
 DOCKER_BUILDKIT=1 docker build -t dice-game .
 docker run --rm --publish 3000:3000 dice-game
 
+## TODO
+1. Create other exercises and randomize which one is picked
+1. Make die animations better
+1. Make success / failure better looking
+1. Consider doing letters instead of numbers
+1. Make guesses look better 
+1. Alternate game: solve all the solutions but not the same one twice (add timer?)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

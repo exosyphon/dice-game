@@ -5,13 +5,35 @@ export default function Home() {
     const sides: string[] = ['front', 'back', 'right', 'left', 'top', 'bottom'];
     const customTextCss: string[] = ['', 'invert-text', '', '', '', 'rotated-text'];
 
-    const initialState = [1, 3, 2, 5, 4, 6];
+    const solutions = [
+        [1, 3, 2, 5, 4, 6],
+        [1, 3, 5, 2, 4, 6],
+        [1, 3, 4, 6, 2, 5],
+        [1, 3, 4, 6, 5, 2],
+        [1, 3, 6, 4, 2, 5],
+        [1, 3, 6, 4, 5, 2],
+        [1, 3, 2, 5, 6, 4],
+        [1, 3, 5, 2, 6, 4],
+        [1, 2, 3, 5, 6, 4],
+    ]
+    const initialState = solutions[0];
     const [diceFront, setDiceFront] = useState<number>(0);
     const [diceState, setDiceState] = useState<number[]>(initialState);
     const [numberOfGuesses, setNumberOfGuesses] = useState<number>(1);
     const [nextNumber, setNextNumber] = useState<number>(2);
     const [displayX, setDisplayX] = useState<boolean>(false);
     const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
+
+    const allCombinations = [
+        ['R', 'R', 'U', 'R', 'R' ],
+        ['L', 'L', 'U', 'L', 'L' ],
+        ['U', 'U', 'R', 'U', 'U' ],
+        ['D', 'D', 'R', 'D', 'D' ],
+        ['U', 'U', 'L', 'U', 'U' ],
+        ['D', 'D', 'L', 'D', 'D' ],
+        ['R', 'R', 'D', 'R', 'R' ],
+        ['L', 'L', 'D', 'L', 'L' ],
+    ]
 
     class Dice {
         front: number;
@@ -31,7 +53,7 @@ export default function Home() {
         }
 
         toArray(): number[] {
-            return [this.front, this.top, this.back, this.bottom, this.left, this.right]
+            return [this.front, this.back, this.right, this.left, this.top, this.bottom]
         }
 
         rotateBottom(n: number): void {
@@ -86,7 +108,8 @@ export default function Home() {
     }
 
     const guessesExceeded = () => {
-        return numberOfGuesses > 3;
+        return false;
+        // return numberOfGuesses > 3;
     }
 
     const restartGame = () => {
@@ -171,9 +194,11 @@ export default function Home() {
                     >
                         Dice Game
                     </div>
-                    {displayX && <div style={{color: 'red'}}>❌❌ Incorrect Guess ❌❌</div>}
-                    {displaySuccess && <div style={{color: 'green'}}>✅✅ You Win!!! ✅✅</div>}
-                    {guessesExceeded() && <div style={{color: 'red'}}>Better Luck Next Time</div>}
+                    <div>Front: {diceFront}</div>
+                    <div>State: {diceState.join(', ')}</div>
+                    {displayX && <div style={{ color: 'red' }}>❌❌ Incorrect Guess ❌❌</div>}
+                    {displaySuccess && <div style={{ color: 'green' }}>✅✅ You Win!!! ✅✅</div>}
+                    {guessesExceeded() && <div style={{ color: 'red' }}>Better Luck Next Time</div>}
                     {(guessesExceeded() || displaySuccess) && <button onClick={restartGame} style={{
                         background: 'blue',
                         color: 'white',
