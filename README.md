@@ -6,13 +6,15 @@ DOCKER_BUILDKIT=1 docker build -t dice-game .
 docker run --rm --publish 3000:3000 dice-game
 
 ## TODO
-1. Create other solutions and randomize which one is picked
 1. Make die animations better
 1. Make success / failure better looking
-1. Consider doing letters instead of numbers
 1. Make guesses look better 
-1. Alternate game: solve all the solutions but not the same one twice (add timer?)
+
+## Nice to Haves
+1. Store state in browser?
+1. Consider doing letters instead of numbers
 1. Obfuscate solutions
+1. Alternate game: solve all the solutions but not the same one twice (add timer?)
 
 ## All Combinations
 ['L', 'D', 'L', 'D', 'L'],
