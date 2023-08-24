@@ -6,12 +6,47 @@ DOCKER_BUILDKIT=1 docker build -t dice-game .
 docker run --rm --publish 3000:3000 dice-game
 
 ## TODO
-1. Create other exercises and randomize which one is picked
+1. Create other solutions and randomize which one is picked
 1. Make die animations better
 1. Make success / failure better looking
 1. Consider doing letters instead of numbers
 1. Make guesses look better 
 1. Alternate game: solve all the solutions but not the same one twice (add timer?)
+1. Obfuscate solutions
+
+## All Combinations
+['L', 'D', 'L', 'D', 'L'],
+['R', 'U', 'U', 'R', 'U'],
+['U', 'U', 'L', 'U', 'U'],
+['L', 'U', 'U', 'L', 'U'],
+['U', 'R', 'U', 'R', 'U'],
+['R', 'U', 'R', 'U', 'R'],
+['D', 'R', 'D', 'R', 'D'],
+['R', 'D', 'R', 'D', 'R'],
+['R', 'R', 'U', 'R', 'R'],
+['L', 'D', 'L', 'L', 'D'],
+['D', 'R', 'R', 'D', 'R'],
+['R', 'D', 'D', 'R', 'D'],
+['D', 'L', 'L', 'D', 'L'],
+['U', 'L', 'U', 'L', 'U'],
+['R', 'D', 'R', 'R', 'D'],
+['L', 'U', 'L', 'L', 'U'],
+['L', 'U', 'L', 'U', 'L'],
+['L', 'L', 'D', 'L', 'L'],
+['L', 'D', 'D', 'L', 'D'],
+['D', 'D', 'L', 'D', 'D'],
+['U', 'L', 'L', 'U', 'L'],
+['D', 'L', 'D', 'L', 'D'],
+['L', 'L', 'U', 'L', 'L'],
+['U', 'L', 'U', 'U', 'L'],
+['R', 'U', 'R', 'R', 'U'],
+['D', 'R', 'D', 'D', 'R'],
+['D', 'L', 'D', 'D', 'L'],
+['U', 'R', 'R', 'U', 'R'],
+['U', 'R', 'U', 'U', 'R'],
+['R', 'R', 'D', 'R', 'R'],
+['U', 'U', 'R', 'U', 'U'],
+['D', 'D', 'R', 'D', 'D']
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

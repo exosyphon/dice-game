@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+    const debug = true;
     const numbers: number[] = [1, 6, 5, 2, 3, 4];
     const sides: string[] = ['front', 'back', 'right', 'left', 'top', 'bottom'];
     const customTextCss: string[] = ['', 'invert-text', '', '', '', 'rotated-text'];
 
-    const solutions = [
+    const [solutions, _setSolutions] = useState<number[][]>([
         [1, 3, 2, 5, 4, 6],
         [1, 3, 5, 2, 4, 6],
         [1, 3, 4, 6, 2, 5],
@@ -14,9 +15,45 @@ export default function Home() {
         [1, 3, 6, 4, 5, 2],
         [1, 3, 2, 5, 6, 4],
         [1, 3, 5, 2, 6, 4],
+        [1, 4, 5, 3, 6, 2],
+        [1, 4, 6, 3, 5, 2],
+        [1, 5, 6, 3, 4, 2],
+        [1, 4, 3, 5, 6, 2],
+        [1, 5, 6, 3, 4, 2],
+        [1, 4, 5, 6, 2, 3],
+        [1, 5, 4, 6, 3, 2],
+        [1, 3, 2, 6, 4, 5],
+        [1, 2, 4, 6, 5, 3],
+        [1, 4, 5, 3, 6, 2],
         [1, 2, 3, 5, 6, 4],
-    ]
-    const initialState = solutions[0];
+        [1, 5, 4, 6, 2, 3],
+        [1, 4, 6, 5, 3, 2],
+        [1, 5, 3, 6, 2, 4],
+        [1, 3, 5, 6, 4, 2],
+        [1, 2, 3, 6, 4, 5],
+        [1, 4, 6, 2, 3, 5],
+        [1, 5, 3, 6, 4, 2],
+        [1, 5, 6, 4, 2, 3],
+        [1, 5, 3, 2, 6, 4],
+        [1, 3, 5, 6, 2, 4],
+        [1, 3, 2, 4, 6, 5],
+        [1, 4, 2, 6, 5, 3],
+        [1, 2, 6, 3, 5, 4],
+        [1, 3, 2, 6, 5, 4],
+        [1, 2, 4, 5, 6, 3],
+        [1, 5, 4, 2, 6, 3],
+        [1, 3, 6, 5, 4, 2],
+        [1, 3, 6, 2, 4, 5],
+        [1, 4, 5, 6, 3, 2],
+        [1, 2, 4, 6, 3, 5],
+        [1, 3, 5, 4, 6, 2],
+        [1, 5, 6, 3, 2, 4],
+        [1, 2, 3, 6, 5, 4],
+        [1, 4, 2, 6, 3, 5],
+        [1, 2, 6, 4, 5, 3],
+        [1, 4, 2, 3, 6, 5],
+    ]);
+    const [initialState, setInitialState] = useState<number[]>([]);
     const [diceFront, setDiceFront] = useState<number>(0);
     const [diceState, setDiceState] = useState<number[]>(initialState);
     const [numberOfGuesses, setNumberOfGuesses] = useState<number>(1);
@@ -24,16 +61,9 @@ export default function Home() {
     const [displayX, setDisplayX] = useState<boolean>(false);
     const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
 
-    const allCombinations = [
-        ['R', 'R', 'U', 'R', 'R' ],
-        ['L', 'L', 'U', 'L', 'L' ],
-        ['U', 'U', 'R', 'U', 'U' ],
-        ['D', 'D', 'R', 'D', 'D' ],
-        ['U', 'U', 'L', 'U', 'U' ],
-        ['D', 'D', 'L', 'D', 'D' ],
-        ['R', 'R', 'D', 'R', 'R' ],
-        ['L', 'L', 'D', 'L', 'L' ],
-    ]
+    useEffect(() => {
+        setInitialState(solutions[Math.floor(Math.random() * 45)]);
+    }, [solutions]);
 
     class Dice {
         front: number;
@@ -108,8 +138,7 @@ export default function Home() {
     }
 
     const guessesExceeded = () => {
-        return false;
-        // return numberOfGuesses > 3;
+        return numberOfGuesses >= 6;
     }
 
     const restartGame = () => {
@@ -194,8 +223,12 @@ export default function Home() {
                     >
                         Dice Game
                     </div>
-                    <div>Front: {diceFront}</div>
-                    <div>State: {diceState.join(', ')}</div>
+                    {debug &&
+                        <div>
+                            <div>Front: {diceFront}</div>
+                            <div>State: {diceState.join(', ')}</div>
+                        </div>
+                    }
                     {displayX && <div style={{ color: 'red' }}>❌❌ Incorrect Guess ❌❌</div>}
                     {displaySuccess && <div style={{ color: 'green' }}>✅✅ You Win!!! ✅✅</div>}
                     {guessesExceeded() && <div style={{ color: 'red' }}>Better Luck Next Time</div>}
@@ -209,7 +242,7 @@ export default function Home() {
                         width: '100px'
                     }}>Reset</button>}
                     <div className='mb-8'>
-                        Number of Guesses: {numberOfGuesses} out of 3.
+                        Number of Guesses: {numberOfGuesses} out of 6.
                     </div>
                     <button onClick={topF} disabled={guessesExceeded()} style={{
                         background: guessesExceeded() ? 'gray' : 'blue',
