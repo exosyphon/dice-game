@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
     const debug = true;
-    const numbers: number[] = [1, 6, 5, 2, 3, 4];
+    const [numbers, setNumbers] = useState<number[]>([]);
+    const [currentDiceHtml, setCurrentDiceHtml] = useState<any>(null);
     const sides: string[] = ['front', 'back', 'right', 'left', 'top', 'bottom'];
-    const customTextCss: string[] = ['', 'invert-text', '', '', '', 'rotated-text'];
+    // const customTextCss: string[] = ['', 'invert-text', '', '', 'invert-text', ''];
+    const customTextCss: string[] = ['', '', '', '', '', ''];
+
+    // TODO: fix numbers displaying / fix 6 displaying at the end 
 
     const [solutions, _setSolutions] = useState<number[][]>([
         [1, 3, 2, 5, 4, 6],
@@ -55,14 +59,36 @@ export default function Home() {
     ]);
     const [initialState, setInitialState] = useState<number[]>([]);
     const [diceFront, setDiceFront] = useState<number>(0);
-    const [diceState, setDiceState] = useState<number[]>(initialState);
+    const [diceState, setDiceState] = useState<number[]>([]);
     const [numberOfGuesses, setNumberOfGuesses] = useState<number>(1);
     const [nextNumber, setNextNumber] = useState<number>(2);
     const [displayX, setDisplayX] = useState<boolean>(false);
     const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
 
     useEffect(() => {
-        setInitialState(solutions[Math.floor(Math.random() * 45)]);
+        const mySolution = solutions[17];
+        setInitialState(mySolution);
+        // setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
+        setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
+        // setInitialState(solutions[Math.floor(Math.random() * 45)]);
+        setDiceState(mySolution);
+        setCurrentDiceHtml((
+            <div className={`dice m-6 gimbal`}>
+                {[mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]?.map((item, index) => {
+                    return (
+                        <div
+                            key={index}
+                            className={`side ${sides[index]}`}
+                            style={{
+                                outline: `1px solid black`,
+                            }}
+                        >
+                            <div className={customTextCss[index]}>{item}</div>
+                        </div>
+                    );
+                })}
+            </div>
+        ));
     }, [solutions]);
 
     class Dice {
@@ -149,6 +175,24 @@ export default function Home() {
     }
 
     const resetDie = () => {
+        setCurrentDiceHtml((
+            <div className={`dice m-6 gimbal`}>
+                {numbers?.map((item, index) => {
+                    return (
+                        <div
+                            key={index}
+                            className={`side ${sides[index]}`}
+                            style={{
+                                outline: `1px solid black`,
+                            }}
+                        >
+                            <div className={customTextCss[index]}>{item}</div>
+                        </div>
+                    );
+                })}
+            </div>
+        ));
+
         setDiceState(initialState);
         setDiceFront(numbers.indexOf(1));
         setNextNumber(2);
@@ -174,6 +218,7 @@ export default function Home() {
     }
 
     const rightF = () => {
+        doAnotherRotate('Y', -90);
         dice.rotateRight(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
@@ -181,6 +226,7 @@ export default function Home() {
     };
 
     const leftF = () => {
+        doAnotherRotate('Y', 90);
         dice.rotateLeft(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
@@ -188,6 +234,7 @@ export default function Home() {
     };
 
     const topF = () => {
+        doAnotherRotate('X', -90);
         dice.rotateTop(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
@@ -195,12 +242,21 @@ export default function Home() {
     };
 
     const bottomF = () => {
+        doAnotherRotate('X', 90);
         dice.rotateBottom(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
         checkConditions();
     };
 
+    const doAnotherRotate = (axis: string, degrees: number) => {
+        setCurrentDiceHtml(
+            <div className='gimbal' style={{ width: 0, height: 0, transform: `rotate${axis}(${degrees}deg)` }}>
+                {currentDiceHtml}
+            </div>
+        );
+    };
+   
     return (
         <>
             <div style={{ display: 'flex' }}>
@@ -263,20 +319,8 @@ export default function Home() {
                             height: '50px',
                             width: '100px',
                         }}>Left</button>
-                        <div className={`dice rolled-${sides[diceFront]} m-6`}>
-                            {numbers?.map((item, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className={`side ${sides[index]}`}
-                                        style={{
-                                            outline: `1px solid black`,
-                                        }}
-                                    >
-                                        <div className={customTextCss[index]}>{item}</div>
-                                    </div>
-                                );
-                            })}
+                        <div className='container'>
+                            {currentDiceHtml}
                         </div>
                         <button onClick={rightF} disabled={guessesExceeded()} style={{
                             background: guessesExceeded() ? 'gray' : 'blue',
