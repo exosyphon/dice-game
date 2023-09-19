@@ -12,6 +12,16 @@
     margin: 50px auto;
 }
 
+.container {
+    width: 250px;
+    height: 165px;
+    position: relative;
+    margin: 0 auto 100px;
+    border: 1px solid #FFF;
+    perspective: 1000px;
+    perspective-origin: 50% 50%;
+}
+
 .dice {
     display: inline-block;
     position: relative;
@@ -30,68 +40,37 @@
     justify-content: center;
     align-items: center;
     background: white;
-}
-
-.rotated-text {
-  transform: rotate(-90deg);
-}
-
-.invert-text {
-   transform: scale(-1, -1);
+    font-size: 4rem;
 }
 
 .dice .front {
-    transform: translateZ(60px);
+    transform: translateZ(100px);
 }
 
 .dice .back {
-    transform: rotateX(180deg) translateZ(60px);
+    transform: rotateX(180deg) translateZ(100px);
 }
 
 .dice .right {
-    transform: rotateY(90deg) translateZ(60px);
+    transform: rotateY(90deg) translateZ(100px);
 }
 
 .dice .left {
-    transform: rotateY(-90deg) translateZ(60px);
+    transform: rotateY(-90deg) translateZ(100px);
 }
 
 .dice .top {
-    transform: rotateX(90deg) translateZ(60px);
+    transform: rotateX(90deg) translateZ(100px);
 }
 
 .dice .bottom {
-    transform: rotateX(-90deg) translateZ(60px);
+    transform: rotateX(-90deg) translateZ(100px);
 }
 
-.dice.rolling {
-    animation: roll 1s infinite linear;
+.gimbal {
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  position: absolute; 
+  transform-origin: 120px 120px;
 }
 
-@keyframes roll {
-    from {
-        transform: rotateX(0) rotateY(0);
-    }
-    to {
-        transform: rotateX(360deg) rotateY(360deg);
-    }
-}
-
-.rolled-front {
-    transform: rotateX(0) rotateY(0);
-}
-.rolled-back {
-    transform: rotateX(0) rotateY(180deg);
-}
-.rolled-left {
-    transform: rotateX(0) rotateY(90deg);
-}
-.rolled-right {
-    transform: rotateX(0) rotateY(-90deg);
-}
-.rolled-top {
-    transform: rotateX(-90deg) rotateY(0);
-}
-.rolled-bottom {
-    transform: rotateX(90deg) rotateY(90deg);
-}

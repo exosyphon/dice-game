@@ -6,7 +6,7 @@ DOCKER_BUILDKIT=1 docker build -t dice-game .
 docker run --rm --publish 3000:3000 dice-game
 
 ## TODO
-1. Make die animations better
+1. Keep track of guesses and display them
 1. Make success / failure better looking
 1. Make guesses look better 
 
