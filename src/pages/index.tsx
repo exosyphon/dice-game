@@ -56,7 +56,7 @@ export default function Home() {
     const [initialState, setInitialState] = useState<number[]>([]);
     const [diceFront, setDiceFront] = useState<number>(0);
     const [diceState, setDiceState] = useState<number[]>([]);
-    const [numberOfGuesses, setNumberOfGuesses] = useState<number>(1);
+    const [guesses, setGuesses] = useState<string[][]>([[]]);
     const [nextNumber, setNextNumber] = useState<number>(2);
     const [displayX, setDisplayX] = useState<boolean>(false);
     const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
@@ -64,7 +64,6 @@ export default function Home() {
     useEffect(() => {
         const mySolution = solutions[17]; // solutions[Math.floor(Math.random() * 45)];
         setInitialState(mySolution);
-        // setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
         setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
         setDiceState(mySolution);
         setCurrentDiceHtml((
@@ -159,14 +158,14 @@ export default function Home() {
     }
 
     const guessesExceeded = () => {
-        return numberOfGuesses >= 6;
+        return guesses.length >= 6;
     }
 
     const restartGame = () => {
         resetDie();
         setDisplaySuccess(false);
         setDisplayX(false);
-        setNumberOfGuesses(1);
+        setGuesses([[]]);
     }
 
     const resetDie = () => {
@@ -194,12 +193,13 @@ export default function Home() {
     }
 
     const handleFailure = () => {
-        resetDie();
-        setNumberOfGuesses(numberOfGuesses + 1);
+        guesses.push([]);
         setDisplayX(true);
+        setGuesses(guesses);
         setTimeout(() => {
             setDisplayX(false);
-        }, 3000);
+            resetDie();
+        }, 2000);
     }
 
     const checkConditions = () => {
@@ -217,6 +217,8 @@ export default function Home() {
         dice.rotateRight(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        guesses[guesses.length - 1].push("→");
+        setGuesses(guesses);
         checkConditions();
     };
 
@@ -225,6 +227,8 @@ export default function Home() {
         dice.rotateLeft(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        guesses[guesses.length - 1].push("←");
+        setGuesses(guesses);
         checkConditions();
     };
 
@@ -233,6 +237,8 @@ export default function Home() {
         dice.rotateTop(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        guesses[guesses.length - 1].push("↑");
+        setGuesses(guesses);
         checkConditions();
     };
 
@@ -241,6 +247,8 @@ export default function Home() {
         dice.rotateBottom(1);
         setDiceState(dice.toArray());
         setDiceFront(numbers.indexOf(dice.front));
+        guesses[guesses.length - 1].push("↓");
+        setGuesses(guesses);
         checkConditions();
     };
 
@@ -251,7 +259,11 @@ export default function Home() {
             </div>
         );
     };
-   
+
+    const disableButtons = () => {
+        return guessesExceeded() || displayX || displaySuccess;
+    }
+
     return (
         <>
             <div style={{ display: 'flex' }}>
@@ -262,7 +274,8 @@ export default function Home() {
                         alignItems: 'center',
                         flexDirection: 'column',
                         height: '100vh',
-                        width: '100%',
+                        width: '60%',
+                        marginRight: '-8rem',
                     }}
                 >
                     <div
@@ -292,11 +305,8 @@ export default function Home() {
                         height: '50px',
                         width: '100px'
                     }}>Reset</button>}
-                    <div className='mb-8'>
-                        Number of Guesses: {numberOfGuesses} out of 6.
-                    </div>
-                    <button onClick={topF} disabled={guessesExceeded()} style={{
-                        background: guessesExceeded() ? 'gray' : 'blue',
+                    <button onClick={topF} disabled={disableButtons()} style={{
+                        background: disableButtons() ? 'gray' : 'blue',
                         color: 'white',
                         padding: '1rem',
                         borderRadius: '.5rem',
@@ -305,8 +315,8 @@ export default function Home() {
                         width: '100px'
                     }}>Top</button>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <button onClick={leftF} disabled={guessesExceeded()} style={{
-                            background: guessesExceeded() ? 'gray' : 'blue',
+                        <button onClick={leftF} disabled={disableButtons()} style={{
+                            background: disableButtons() ? 'gray' : 'blue',
                             color: 'white',
                             padding: '1rem',
                             borderRadius: '.5rem',
@@ -318,8 +328,8 @@ export default function Home() {
                         <div className='container'>
                             {currentDiceHtml}
                         </div>
-                        <button onClick={rightF} disabled={guessesExceeded()} style={{
-                            background: guessesExceeded() ? 'gray' : 'blue',
+                        <button onClick={rightF} disabled={disableButtons()} style={{
+                            background: disableButtons() ? 'gray' : 'blue',
                             color: 'white',
                             padding: '1rem',
                             borderRadius: '.5rem',
@@ -329,8 +339,8 @@ export default function Home() {
                             width: '100px'
                         }}>Right</button>
                     </div>
-                    <button onClick={bottomF} disabled={guessesExceeded()} style={{
-                        background: guessesExceeded() ? 'gray' : 'blue',
+                    <button onClick={bottomF} disabled={disableButtons()} style={{
+                        background: disableButtons() ? 'gray' : 'blue',
                         color: 'white',
                         padding: '1rem',
                         borderRadius: '.5rem',
@@ -338,6 +348,35 @@ export default function Home() {
                         height: '50px',
                         width: '100px'
                     }}>Down</button>
+                </div>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'start',
+                        flexDirection: 'column',
+                        height: '50vh',
+                        width: '40%',
+                    }}
+                >
+                    <div>
+                        <div className='mb-8 font-bold'>
+                            Number of Guesses: {guesses.length - 1} out of 6.
+                        </div>
+                        <div className='font-bold'>
+                            Guesses:
+                            {guesses.map((guess, guessIndex) => {
+                                return (
+                                    <div key={guessIndex}>
+                                        {guess.map((guessInternal, index) => {
+                                            return (<span key={index} style={{}} > {guessInternal} </span>);
+                                        })}
+                                    </div>
+                                )
+                            })
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
