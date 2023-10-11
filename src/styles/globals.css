@@ -74,3 +74,41 @@
   transform-origin: 120px 120px;
 }
 
+.dot {
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #000;
+  border-radius: 15px;
+}
+
+.dot1-1 { top: 85px; left: 85px; }
+
+.dot2-1 { top: 45px; left: 45px; }
+.dot2-2 { top: 125px; left: 125px; }
+
+.dot3-1 { top: 45px; left: 45px; }
+.dot3-2 { top: 85px; left: 85px; }
+.dot3-3 { top: 125px; left: 125px; }
+
+
+.dot4-1 { top: 45px; left: 45px; }
+.dot4-2 { top: 45px; left: 125px; }
+.dot4-3 { top: 125px; left: 45px; }
+.dot4-4 { top: 125px; left: 125px; }
+
+
+.dot5-1 { top: 45px; left: 45px; }
+.dot5-2 { top: 45px; left: 125px; }
+.dot5-3 { top: 85px; left: 85px; }
+.dot5-4 { top: 125px; left: 45px; }
+.dot5-5 { top: 125px; left: 125px; }
+
+.dot6-1 { top: 45px; left: 85px; }
+.dot6-2 { top: 45px; left: 45px; }
+.dot6-3 { top: 45px; left: 125px; }
+.dot6-4 { top: 125px; left: 45px; }
+.dot6-5 { top: 125px; left: 85px; }
+.dot6-6 { top: 125px; left: 125px; }
+

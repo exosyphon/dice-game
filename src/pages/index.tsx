@@ -62,7 +62,7 @@ export default function Home() {
     const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
 
     useEffect(() => {
-        const mySolution = solutions[17]; // solutions[Math.floor(Math.random() * 45)];
+        const mySolution = solutions[17]; // TODO: solutions[Math.floor(Math.random() * 45)];
         setInitialState(mySolution);
         setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
         setDiceState(mySolution);
@@ -77,7 +77,9 @@ export default function Home() {
                                 outline: `1px solid black`,
                             }}
                         >
-                            <div>{item}</div>
+                            {Array(item).fill(1).map((_num, numIndex) => {
+                                return (<span key={numIndex + 1} className={`dot dot${item}-${numIndex + 1}`}></span>)
+                            })}
                         </div>
                     );
                 })}
@@ -171,7 +173,7 @@ export default function Home() {
     const resetDie = () => {
         setCurrentDiceHtml((
             <div className={`dice m-6 gimbal`}>
-                {numbers?.map((item, index) => {
+                {numbers?.map((item: number, index) => {
                     return (
                         <div
                             key={index}
@@ -180,11 +182,16 @@ export default function Home() {
                                 outline: `1px solid black`,
                             }}
                         >
-                            <div>{item}</div>
+                            <div>
+                                {Array(item).fill(1).map((_num, numIndex) => {
+                                    return (<span key={numIndex + 1} className={`dot dot${item}-${numIndex + 1}`}></span>)
+                                })}
+                            </div>
                         </div>
                     );
-                })}
-            </div>
+                })
+                }
+            </div >
         ));
 
         setDiceState(initialState);
