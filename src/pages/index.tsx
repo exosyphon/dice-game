@@ -286,13 +286,20 @@ export default function Home() {
                     }}
                 >
                     <div
-                        className={'mb-8'}
                         style={{
                             fontSize: '44px',
                             fontWeight: 'bold',
                         }}
                     >
                         Dice Game
+                    </div>
+                    <div
+                        className={'mb-8'}
+                        style={{
+                            fontSize: '30px',
+                        }}
+                    >
+                        Guess the numbers in order!
                     </div>
                     {debug &&
                         <div>
