@@ -20,38 +20,13 @@ export default function Home() {
         [1, 5, 6, 3, 4, 2],
         [1, 4, 3, 5, 6, 2],
         [1, 5, 6, 3, 4, 2],
-        [1, 4, 5, 6, 2, 3],
-        [1, 5, 4, 6, 3, 2],
-        [1, 3, 2, 6, 4, 5],
-        [1, 2, 4, 6, 5, 3],
-        [1, 4, 5, 3, 6, 2],
-        [1, 2, 3, 5, 6, 4],
-        [1, 5, 4, 6, 2, 3],
-        [1, 4, 6, 5, 3, 2],
         [1, 5, 3, 6, 2, 4],
-        [1, 3, 5, 6, 4, 2],
-        [1, 2, 3, 6, 4, 5],
         [1, 4, 6, 2, 3, 5],
         [1, 5, 3, 6, 4, 2],
-        [1, 5, 6, 4, 2, 3],
-        [1, 5, 3, 2, 6, 4],
-        [1, 3, 5, 6, 2, 4],
-        [1, 3, 2, 4, 6, 5],
         [1, 4, 2, 6, 5, 3],
-        [1, 2, 6, 3, 5, 4],
-        [1, 3, 2, 6, 5, 4],
-        [1, 2, 4, 5, 6, 3],
         [1, 5, 4, 2, 6, 3],
-        [1, 3, 6, 5, 4, 2],
-        [1, 3, 6, 2, 4, 5],
-        [1, 4, 5, 6, 3, 2],
-        [1, 2, 4, 6, 3, 5],
-        [1, 3, 5, 4, 6, 2],
         [1, 5, 6, 3, 2, 4],
-        [1, 2, 3, 6, 5, 4],
         [1, 4, 2, 6, 3, 5],
-        [1, 2, 6, 4, 5, 3],
-        [1, 4, 2, 3, 6, 5],
     ]);
     const [initialState, setInitialState] = useState<number[]>([]);
     const [diceFront, setDiceFront] = useState<number>(0);
@@ -61,30 +36,47 @@ export default function Home() {
     const [displayX, setDisplayX] = useState<boolean>(false);
     const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
 
+    type Solution = {
+        solution: string;
+    }
+
     useEffect(() => {
-        const mySolution = solutions[17]; // TODO: solutions[Math.floor(Math.random() * 45)];
-        setInitialState(mySolution);
-        setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
-        setDiceState(mySolution);
-        setCurrentDiceHtml((
-            <div className={`dice m-6 gimbal`}>
-                {[mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]?.map((item, index) => {
-                    return (
-                        <div
-                            key={index}
-                            className={`side ${sides[index]}`}
-                            style={{
-                                outline: `1px solid black`,
-                            }}
-                        >
-                            {Array(item).fill(1).map((_num, numIndex) => {
-                                return (<span key={numIndex + 1} className={`dot dot${item}-${numIndex + 1}`}></span>)
-                            })}
-                        </div>
-                    );
-                })}
-            </div>
-        ));
+        fetch('/api/solutions', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => res.json())
+            .then((data: Solution) => {
+                if (!data || !data['solution']) {
+                    return;
+                }
+
+                const mySolution = solutions[Number(data['solution'])];
+                setInitialState(mySolution);
+                setNumbers([mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]);
+                setDiceState(mySolution);
+                setCurrentDiceHtml((
+                    <div className={`dice m-6 gimbal`}>
+                        {[mySolution[0], mySolution[1], mySolution[3], mySolution[2], mySolution[5], mySolution[4]]?.map((item, index) => {
+                            return (
+                                <div
+                                    key={index}
+                                    className={`side ${sides[index]}`}
+                                    style={{
+                                        outline: `1px solid black`,
+                                    }}
+                                >
+                                    {Array(item).fill(1).map((_num, numIndex) => {
+                                        return (<span key={numIndex + 1} className={`dot dot${item}-${numIndex + 1}`}></span>)
+                                    })}
+                                </div>
+                            );
+                        })}
+                    </div>
+                ));
+            });
     }, [solutions]);
 
     class Dice {
@@ -160,7 +152,7 @@ export default function Home() {
     }
 
     const guessesExceeded = () => {
-        return guesses.length >= 6;
+        return guesses.length >= 5;
     }
 
     const restartGame = () => {
@@ -271,6 +263,7 @@ export default function Home() {
         return guessesExceeded() || displayX || displaySuccess;
     }
 
+
     return (
         <>
             <div className={'grid grid-rows-2 grid-cols-1 lg:grid-cols-2 flex-wrap'}>
@@ -285,7 +278,7 @@ export default function Home() {
                 >
                     <div>
                         <div className='mb-8 font-bold'>
-                            Number of Guesses: {guesses.length - 1} out of 6.
+                            Number of Guesses: {guesses.length - 1} out of 5.
                         </div>
                         <div className='font-bold'>
                             Guesses:
