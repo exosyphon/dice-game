@@ -273,17 +273,43 @@ export default function Home() {
 
     return (
         <>
-            <div style={{ display: 'flex' }}>
+            <div className={'grid grid-rows-2 grid-cols-1 lg:grid-cols-2 flex-wrap'}>
                 <div
                     style={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                         flexDirection: 'column',
-                        height: '100vh',
-                        width: '60%',
-                        marginRight: '-8rem',
                     }}
+                    className='mt-0 lg:mt-8'
+                >
+                    <div>
+                        <div className='mb-8 font-bold'>
+                            Number of Guesses: {guesses.length - 1} out of 6.
+                        </div>
+                        <div className='font-bold'>
+                            Guesses:
+                            {guesses.map((guess, guessIndex) => {
+                                return (
+                                    <div key={guessIndex}>
+                                        {guess.map((guessInternal, index) => {
+                                            return (<span key={index} style={{}} > {guessInternal} </span>);
+                                        })}
+                                    </div>
+                                )
+                            })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                    }}
+                    className='m-0 lg:m-32'
                 >
                     <div
                         style={{
@@ -362,35 +388,6 @@ export default function Home() {
                         height: '50px',
                         width: '100px'
                     }}>Down</button>
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'start',
-                        flexDirection: 'column',
-                        height: '50vh',
-                        width: '40%',
-                    }}
-                >
-                    <div>
-                        <div className='mb-8 font-bold'>
-                            Number of Guesses: {guesses.length - 1} out of 6.
-                        </div>
-                        <div className='font-bold'>
-                            Guesses:
-                            {guesses.map((guess, guessIndex) => {
-                                return (
-                                    <div key={guessIndex}>
-                                        {guess.map((guessInternal, index) => {
-                                            return (<span key={index} style={{}} > {guessInternal} </span>);
-                                        })}
-                                    </div>
-                                )
-                            })
-                            }
-                        </div>
-                    </div>
                 </div>
             </div>
         </>
