@@ -152,7 +152,7 @@ export default function Home() {
     }
 
     const guessesExceeded = () => {
-        return guesses.length >= 5;
+        return guesses.length >= 6;
     }
 
     const restartGame = () => {
