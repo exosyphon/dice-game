@@ -11,12 +11,11 @@ export default function Document() {
             />
             <Script id='analytics' strategy="lazyOnload">
                 {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'G-PMNS5L31T2', {
-                    page_path: window.location.pathname,
-                    });
+                     window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-PMNS5L31T2');
                 `}
             </Script>
             <body>
