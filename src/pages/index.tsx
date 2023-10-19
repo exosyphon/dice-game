@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Script from 'next/script';
 
 export default function Home() {
     const debug = false;
@@ -266,6 +267,19 @@ export default function Home() {
 
     return (
         <>
+            <Script
+                strategy="lazyOnload"
+                src={`https://www.googletagmanager.com/gtag/js?id=G-PMNS5L31T2}`}
+            />
+            <Script id='google-analytics' strategy="lazyOnload">
+                {`
+                     window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-PMNS5L31T2');
+                `}
+            </Script>
             <div className={'grid grid-rows-1 lg:grid-rows-2 grid-cols-1 lg:grid-cols-2 flex-wrap'}>
                 <div
                     style={{
