@@ -334,9 +334,10 @@ export default function Home() {
                                 <div>State: {diceState.join(', ')}</div>
                             </div>
                         }
-                        {displayX && <div style={{ color: 'red' }}>❌❌ Incorrect Guess ❌❌</div>}
-                        {displaySuccess && <div style={{ color: 'green' }}>✅✅ You Win!!! ✅✅</div>}
-                        {guessesExceeded() && <div style={{ color: 'red' }}>Better Luck Next Time</div>}
+                        {!displayX && !displaySuccess && !guessesExceeded() && <div className='h-8'></div>}
+                        {displayX && <div style={{ color: 'red' }} className='h-8'>❌❌ Incorrect Guess ❌❌</div>}
+                        {displaySuccess && <div style={{ color: 'green' }} className='h-8'>✅✅ You Win!!! ✅✅</div>}
+                        {guessesExceeded() && <div style={{ color: 'red' }} className='h-8'>Better Luck Next Time</div>}
                         {(guessesExceeded() || displaySuccess) && <button onClick={restartGame} style={{
                             background: 'blue',
                             color: 'white',
