@@ -266,7 +266,7 @@ export default function Home() {
 
     return (
         <>
-            <div className={'grid grid-rows-2 grid-cols-1 lg:grid-cols-2 flex-wrap'}>
+            <div className={'grid grid-rows-1 lg:grid-rows-2 grid-cols-1 lg:grid-cols-2 flex-wrap'}>
                 <div
                     style={{
                         display: 'flex',
@@ -274,13 +274,13 @@ export default function Home() {
                         alignItems: 'center',
                         flexDirection: 'column',
                     }}
-                    className='mt-0 lg:mt-8'
+                    className='mt-8'
                 >
-                    <div>
-                        <div className='mb-8 font-bold'>
+                    <div className='font-bold'>
+                        <div>
                             Number of Guesses: {guesses.length - 1} out of 5.
                         </div>
-                        <div className='font-bold'>
+                        <div>
                             Guesses:
                             {guesses.map((guess, guessIndex) => {
                                 return (
@@ -293,94 +293,93 @@ export default function Home() {
                             })
                             }
                         </div>
+                        <div className='h-10 lg:h-80'></div>
                     </div>
                 </div>
                 <div
                     style={{
                         display: 'flex',
-                        justifyContent: 'center',
                         alignItems: 'center',
                         flexDirection: 'column',
                     }}
-                    className='m-0 lg:m-32'
+                    className='mt-0 ml-0 mr-0 mb-20 justify-center lg:mt-32'
                 >
                     <div
                         style={{
-                            fontSize: '44px',
-                            fontWeight: 'bold',
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexDirection: 'column',
                         }}
+                        className='lg:ml-32 lg:mb-32 lg:mr-48'
                     >
-                        Dice Game
-                    </div>
-                    <div
-                        className={'mb-8'}
-                        style={{
-                            fontSize: '30px',
-                        }}
-                    >
-                        Guess the numbers in order!
-                    </div>
-                    {debug &&
-                        <div>
-                            <div>Front: {diceFront}</div>
-                            <div>State: {diceState.join(', ')}</div>
+                        <div
+                            style={{
+                                fontSize: '44px',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Dice Game
                         </div>
-                    }
-                    {displayX && <div style={{ color: 'red' }}>❌❌ Incorrect Guess ❌❌</div>}
-                    {displaySuccess && <div style={{ color: 'green' }}>✅✅ You Win!!! ✅✅</div>}
-                    {guessesExceeded() && <div style={{ color: 'red' }}>Better Luck Next Time</div>}
-                    {(guessesExceeded() || displaySuccess) && <button onClick={restartGame} style={{
-                        background: 'blue',
-                        color: 'white',
-                        padding: '1rem',
-                        borderRadius: '.5rem',
-                        marginBottom: '1rem',
-                        height: '50px',
-                        width: '100px'
-                    }}>Reset</button>}
-                    <button onClick={topF} disabled={disableButtons()} style={{
-                        background: disableButtons() ? 'gray' : 'blue',
-                        color: 'white',
-                        padding: '1rem',
-                        borderRadius: '.5rem',
-                        marginBottom: '1rem',
-                        height: '50px',
-                        width: '100px'
-                    }}>Top</button>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <button onClick={leftF} disabled={disableButtons()} style={{
+                        <div
+                            className='mb-8 justify-center'
+                            style={{
+                                fontSize: '30px',
+                            }}
+                        >
+                            Guess the numbers in order!
+                        </div>
+                        {debug &&
+                            <div>
+                                <div>Front: {diceFront}</div>
+                                <div>State: {diceState.join(', ')}</div>
+                            </div>
+                        }
+                        {displayX && <div style={{ color: 'red' }}>❌❌ Incorrect Guess ❌❌</div>}
+                        {displaySuccess && <div style={{ color: 'green' }}>✅✅ You Win!!! ✅✅</div>}
+                        {guessesExceeded() && <div style={{ color: 'red' }}>Better Luck Next Time</div>}
+                        {(guessesExceeded() || displaySuccess) && <button onClick={restartGame} style={{
+                            background: 'blue',
+                            color: 'white',
+                            padding: '1rem',
+                            borderRadius: '.5rem',
+                            marginBottom: '1rem',
+                        }}>Reset</button>}
+                        <button onClick={topF} disabled={disableButtons()} className='h-14 w-14' style={{
                             background: disableButtons() ? 'gray' : 'blue',
                             color: 'white',
                             padding: '1rem',
                             borderRadius: '.5rem',
                             marginBottom: '1rem',
-                            marginRight: '1rem',
-                            height: '50px',
-                            width: '100px',
-                        }}>Left</button>
-                        <div className='container'>
-                            {currentDiceHtml}
+                        }}>↑</button>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <button onClick={leftF} disabled={disableButtons()} className='h-14 w-14' style={{
+                                background: disableButtons() ? 'gray' : 'blue',
+                                color: 'white',
+                                padding: '1rem',
+                                borderRadius: '.5rem',
+                                marginBottom: '1rem',
+                                marginRight: '1rem',
+                            }}>←</button>
+                            <div className='container'>
+                                {currentDiceHtml}
+                            </div>
+                            <button onClick={rightF} disabled={disableButtons()} className='h-14 w-14' style={{
+                                background: disableButtons() ? 'gray' : 'blue',
+                                color: 'white',
+                                padding: '1rem',
+                                borderRadius: '.5rem',
+                                marginBottom: '1rem',
+                                marginLeft: '1rem',
+                            }}>→</button>
                         </div>
-                        <button onClick={rightF} disabled={disableButtons()} style={{
+                        <button onClick={bottomF} disabled={disableButtons()} className='h-14 w-14' style={{
                             background: disableButtons() ? 'gray' : 'blue',
                             color: 'white',
                             padding: '1rem',
                             borderRadius: '.5rem',
                             marginBottom: '1rem',
-                            marginLeft: '1rem',
-                            height: '50px',
-                            width: '100px'
-                        }}>Right</button>
+                        }}>↓</button>
                     </div>
-                    <button onClick={bottomF} disabled={disableButtons()} style={{
-                        background: disableButtons() ? 'gray' : 'blue',
-                        color: 'white',
-                        padding: '1rem',
-                        borderRadius: '.5rem',
-                        marginBottom: '1rem',
-                        height: '50px',
-                        width: '100px'
-                    }}>Down</button>
                 </div>
             </div>
         </>
