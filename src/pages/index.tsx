@@ -335,12 +335,20 @@ export default function Home() {
                             Dice Game
                         </div>
                         <div
-                            className='mb-8 justify-center'
+                            className='text-center'
                             style={{
                                 fontSize: '30px',
                             }}
                         >
-                            Rotate the dice in the correct order (1-6)
+                            Rotate dice in the correct order
+                        </div>
+                        <div
+                            className='mb-8'
+                            style={{
+                                fontSize: '15px',
+                            }}
+                        >
+                            (1-6)
                         </div>
                         {debug &&
                             <div>
