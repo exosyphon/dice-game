@@ -340,7 +340,7 @@ export default function Home() {
                                 fontSize: '30px',
                             }}
                         >
-                            Guess the numbers in order!
+                            Rotate the dice in the correct order (1-6)
                         </div>
                         {debug &&
                             <div>
