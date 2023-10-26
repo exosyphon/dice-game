@@ -211,6 +211,8 @@ export default function Home() {
       handleFailure();
     } else if (dice.front == 6) {
       setDisplaySuccess(true);
+      guesses.push([]);
+      setGuesses(guesses);
     } else {
       setNextNumber(dice.front + 1);
     }
@@ -268,6 +270,38 @@ export default function Home() {
     return guessesExceeded() || displayX || displaySuccess;
   };
 
+  const copyGuesses = () => {
+    let text = `Dice Game ${guesses.length - 1}/5\n`
+    guesses.forEach((guessBlock) => {
+      switch (guessBlock.length) {
+        case 5:
+          text += "🟩🟩🟩🟩🟩"
+          break;
+        case 4:
+          text += "🟩🟩🟩🟥"
+          break;
+        case 3:
+          text += "🟩🟩🟥"
+          break;
+        case 2:
+          text += "🟩🟥"
+          break;
+        case 1:
+          text += "🟥"
+          break;
+        default:
+          text += ""
+          break;
+      }
+      text += "\n"
+    })
+    navigator.clipboard.writeText(text).then(function() {
+      alert("Results Copied To Clipboard!")
+    }).catch(function(err) {
+      console.error('Failed to copy guesses: ', err);
+    });
+  };
+
   return (
     <>
       <div className={'grid grid-rows-1 lg:grid-rows-2 grid-cols-1 lg:grid-cols-2 flex-wrap'}>
@@ -281,6 +315,19 @@ export default function Home() {
           className="mt-8"
         >
           <div className="font-bold">
+            <button
+              onClick={copyGuesses}
+              style={{
+                background: 'green',
+                color: 'white',
+                padding: '1rem',
+                borderRadius: '.5rem',
+                marginBottom: '1rem',
+              }}
+            >
+              <span>Share</span>
+              <svg style={{ display: 'inline-block', marginLeft: "8px" }} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path fill="var(--white)" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg>
+            </button>
             <div>Number of Guesses: {guesses.length - 1} out of 5.</div>
             <div>
               Guesses:
@@ -335,12 +382,19 @@ export default function Home() {
               Rotate dice in the correct order
             </div>
             <div
-              className="mb-8"
               style={{
                 fontSize: '15px',
               }}
             >
               (1-6)
+            </div>
+            <div
+              className="mb-8"
+              style={{
+                fontSize: '15px',
+              }}
+            >
+              New Puzzle Each Day
             </div>
             {debug && (
               <div>
