@@ -435,11 +435,10 @@ export default function Home() {
             <button
               onClick={topF}
               disabled={disableButtons()}
-              className="h-14 w-14"
+              className="h-14 w-14 text-2xl font-bold"
               style={{
                 background: disableButtons() ? 'gray' : 'blue',
                 color: 'white',
-                padding: '1rem',
                 borderRadius: '.5rem',
                 marginBottom: '1rem',
               }}
@@ -450,11 +449,10 @@ export default function Home() {
               <button
                 onClick={leftF}
                 disabled={disableButtons()}
-                className="h-14 w-14"
+                className="h-14 w-14 text-2xl font-bold"
                 style={{
                   background: disableButtons() ? 'gray' : 'blue',
                   color: 'white',
-                  padding: '1rem',
                   borderRadius: '.5rem',
                   marginBottom: '1rem',
                   marginRight: '1rem',
@@ -466,11 +464,10 @@ export default function Home() {
               <button
                 onClick={rightF}
                 disabled={disableButtons()}
-                className="h-14 w-14"
+                className="h-14 w-14 text-2xl font-bold"
                 style={{
                   background: disableButtons() ? 'gray' : 'blue',
                   color: 'white',
-                  padding: '1rem',
                   borderRadius: '.5rem',
                   marginBottom: '1rem',
                   marginLeft: '1rem',
@@ -482,11 +479,10 @@ export default function Home() {
             <button
               onClick={bottomF}
               disabled={disableButtons()}
-              className="h-14 w-14"
+              className="h-14 w-14 text-2xl font-bold"
               style={{
                 background: disableButtons() ? 'gray' : 'blue',
                 color: 'white',
-                padding: '1rem',
                 borderRadius: '.5rem',
                 marginBottom: '1rem',
               }}
