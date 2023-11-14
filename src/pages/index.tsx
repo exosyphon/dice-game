@@ -31,10 +31,15 @@ export default function Home() {
   const [initialState, setInitialState] = useState<number[]>([]);
   const [diceFront, setDiceFront] = useState<number>(0);
   const [diceState, setDiceState] = useState<number[]>([]);
-  const [guesses, setGuesses] = useState<string[][]>([[]]);
+  const [guesses, setGuesses] = useState<Guess[][]>([[]]);
   const [nextNumber, setNextNumber] = useState<number>(2);
   const [displayX, setDisplayX] = useState<boolean>(false);
   const [displaySuccess, setDisplaySuccess] = useState<boolean>(false);
+
+  type Guess = {
+    direction: string;
+    correct: boolean;
+  };
 
   type Solution = {
     solution: string;
@@ -197,6 +202,8 @@ export default function Home() {
   };
 
   const handleFailure = () => {
+    const guessBlock = guesses[guesses.length - 1];
+    guessBlock[guessBlock.length - 1].correct = false;
     guesses.push([]);
     setDisplayX(true);
     setGuesses(guesses);
@@ -223,7 +230,7 @@ export default function Home() {
     dice.rotateRight(1);
     setDiceState(dice.toArray());
     setDiceFront(numbers.indexOf(dice.front));
-    guesses[guesses.length - 1].push('→');
+    guesses[guesses.length - 1].push({ direction: '→', correct: true });
     setGuesses(guesses);
     checkConditions();
   };
@@ -233,7 +240,7 @@ export default function Home() {
     dice.rotateLeft(1);
     setDiceState(dice.toArray());
     setDiceFront(numbers.indexOf(dice.front));
-    guesses[guesses.length - 1].push('←');
+    guesses[guesses.length - 1].push({ direction: '←', correct: true });
     setGuesses(guesses);
     checkConditions();
   };
@@ -243,7 +250,7 @@ export default function Home() {
     dice.rotateTop(1);
     setDiceState(dice.toArray());
     setDiceFront(numbers.indexOf(dice.front));
-    guesses[guesses.length - 1].push('↑');
+    guesses[guesses.length - 1].push({ direction: '↑', correct: true });
     setGuesses(guesses);
     checkConditions();
   };
@@ -253,7 +260,7 @@ export default function Home() {
     dice.rotateBottom(1);
     setDiceState(dice.toArray());
     setDiceFront(numbers.indexOf(dice.front));
-    guesses[guesses.length - 1].push('↓');
+    guesses[guesses.length - 1].push({ direction: '↓', correct: true });
     setGuesses(guesses);
     checkConditions();
   };
@@ -275,7 +282,11 @@ export default function Home() {
     guesses.forEach((guessBlock) => {
       switch (guessBlock.length) {
         case 5:
-          text += "🟩🟩🟩🟩🟩"
+          if (guessBlock[guessBlock.length - 1].correct) {
+            text += "🟩🟩🟩🟩🟩"
+          } else {
+            text += "🟩🟩🟩🟩🟥"
+          }
           break;
         case 4:
           text += "🟩🟩🟩🟥"
@@ -338,7 +349,7 @@ export default function Home() {
                       return (
                         <span key={index} style={{}}>
                           {' '}
-                          {guessInternal}{' '}
+                          {guessInternal.direction}{' '}
                         </span>
                       );
                     })}
